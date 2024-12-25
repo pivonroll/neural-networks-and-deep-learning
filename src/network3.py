@@ -151,17 +151,18 @@ class Network(object):
             })
         # Do the actual training
         best_validation_accuracy = 0.0
+        best_iteration = None
+        test_accuracy = None
         for epoch in range(epochs):
             for minibatch_index in range(num_training_batches):
                 iteration = num_training_batches*epoch+minibatch_index
                 if iteration % 1000 == 0:
-                    print("Training mini-batch number {0}".format(iteration))
+                    print(f"Training mini-batch number {iteration}")
                 cost_ij = train_mb(minibatch_index)
                 if (iteration+1) % num_training_batches == 0:
                     validation_accuracy = np.mean(
                         [validate_mb_accuracy(j) for j in range(num_validation_batches)])
-                    print("Epoch {0}: validation accuracy {1:.2%}".format(
-                        epoch, validation_accuracy))
+                    print(f"Epoch {epoch}: validation accuracy {validation_accuracy:.2%}")
                     if validation_accuracy >= best_validation_accuracy:
                         print("This is the best validation accuracy to date.")
                         best_validation_accuracy = validation_accuracy
@@ -169,12 +170,13 @@ class Network(object):
                         if test_data:
                             test_accuracy = np.mean(
                                 [test_mb_accuracy(j) for j in range(num_test_batches)])
-                            print('The corresponding test accuracy is {0:.2%}'.format(
-                                test_accuracy))
+                            print(f"The corresponding test accuracy is {test_accuracy:.2%}")
         print("Finished training network.")
-        print("Best validation accuracy of {0:.2%} obtained at iteration {1}".format(
-            best_validation_accuracy, best_iteration))
-        print("Corresponding test accuracy of {0:.2%}".format(test_accuracy))
+
+        if best_iteration:
+            print(f"Best validation accuracy of {best_validation_accuracy:.2%} obtained at iteration {best_iteration}")
+        if test_accuracy:
+            print(f"Corresponding test accuracy of {test_accuracy:.2%}")
 
 #### Define layer types
 

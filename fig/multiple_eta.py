@@ -45,8 +45,8 @@ def run_networks():
         print("\nTrain a network using eta = "+str(eta))
         net = network2.Network([784, 30, 10])
         results.append(
-            net.SGD(training_data, NUM_EPOCHS, 10, eta, lmbda=5.0,
-                    evaluation_data=validation_data, 
+            net.SGD(training_data, NUM_EPOCHS, 10, eta, regularization_coefficient=5.0,
+                    evaluation_data=validation_data,
                     monitor_training_cost=True))
     f = open("multiple_eta.json", "w")
     json.dump(results, f)

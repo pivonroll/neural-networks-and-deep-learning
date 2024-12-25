@@ -40,14 +40,14 @@ def run_network(filename, n, eta):
     net = network2.Network([784, n, 10], cost=network2.CrossEntropyCost)
     print("Train the network using the default starting weights.")
     default_vc, default_va, default_tc, default_ta \
-        = net.SGD(training_data, 30, 10, eta, lmbda=5.0,
-                  evaluation_data=validation_data, 
+        = net.SGD(training_data, 30, 10, eta, regularization_coefficient=5.0,
+                  evaluation_data=validation_data,
                   monitor_evaluation_accuracy=True)
     print("Train the network using the large starting weights.")
     net.large_weight_initializer()
     large_vc, large_va, large_tc, large_ta \
-        = net.SGD(training_data, 30, 10, eta, lmbda=5.0,
-                  evaluation_data=validation_data, 
+        = net.SGD(training_data, 30, 10, eta, regularization_coefficient=5.0,
+                  evaluation_data=validation_data,
                   monitor_evaluation_accuracy=True)
     f = open(filename, "w")
     json.dump({"default_weight_initialization":

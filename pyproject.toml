@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "neural-networks-and-deep-learning"
+version = "0.1.0"
+description = ""
+authors = ["Radovan"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "1.23.5"
+matplotlib = "^3.10.0"
+scikit-learn = "^1.6.0"
+scipy = "^1.14.1"
+theano = "^1.0.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

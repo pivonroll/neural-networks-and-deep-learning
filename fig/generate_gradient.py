@@ -68,11 +68,11 @@ def initial_norms(training_data, net):
     
 def training(training_data, net, epochs, filename):
     norms = []
-    for j in range(epochs):
+    for epoch in range(epochs):
         average_gradient = get_average_gradient(net, training_data)
         norms.append([list_norm(avg) for avg in average_gradient[:-1]])
-        print("Epoch: %s" % j)
-        net.SGD(training_data, 1, 1000, 0.1, lmbda=5.0)
+        print("Epoch: %s" % epoch)
+        net.SGD(training_data, 1, 1000, 0.1, regularization_coefficient=5.0)
     f = open(filename, "w")
     json.dump(norms, f)
     f.close()

@@ -40,7 +40,7 @@ def run_networks():
         print("\n\nTraining network with data set size %s" % size)
         net.large_weight_initializer()
         num_epochs = int(1500000 / size)
-        net.SGD(training_data[:size], num_epochs, 10, 0.5, lmbda = size*0.0001)
+        net.SGD(training_data[:size], num_epochs, 10, 0.5, regularization_coefficient=size * 0.0001)
         accuracy = net.accuracy(validation_data) / 100.0
         print("Accuracy was %s percent" % accuracy)
         accuracies.append(accuracy)

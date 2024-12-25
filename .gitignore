@@ -6,3 +6,17 @@
 .DS_Store
 loc.py
 src/ec2
+network1/initial_gradient.json
+network1/norms_during_training_2_layers.json
+network1/norms_during_training_3_layers.json
+network1/norms_during_training_4_layers.json
+network1/training_speed_2_layers.json
+network1/training_speed_3_layers.json
+network1/training_speed_4_layers.json
+network2/initial_gradient.json
+network2/norms_during_training_2_layers.json
+network2/norms_during_training_3_layers.json
+network2/norms_during_training_4_layers.json
+network2/training_speed_2_layers.json
+network2/training_speed_3_layers.json
+network2/training_speed_4_layers.json

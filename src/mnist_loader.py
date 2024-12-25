@@ -12,11 +12,20 @@ function usually called by our neural network code.
 # Standard library
 import pickle
 import gzip
+from typing import Tuple, List
 
 # Third-party libraries
 import numpy as np
+import numpy.typing as npt
 
-def load_data():
+MNISTImage = npt.ArrayLike # A training image is a numpy array with 784 pixels representing a 28x28 image
+MNISTImages = npt.ArrayLike # A list of training images, 50,000 in total
+MNISTImageValue = int
+MNISTImageValues = npt.ArrayLike # A list of training image values, 50,000 in total
+
+MNISTData = Tuple[MNISTImages, MNISTImageValues] # A tuple containing the training images and their corresponding values
+
+def load_data() -> Tuple[MNISTData, MNISTData, MNISTData]:
     """Return the MNIST data as a tuple containing the training data,
     the validation data, and the test data.
 
@@ -41,14 +50,18 @@ print(load_data_wrapper()[0])
     That's done in the wrapper function ``load_data_wrapper()``, see
     below.
     """
-    f = gzip.open('../data/mnist.pkl.gz', 'rb')
+    f = gzip.open('../../data/mnist.pkl.gz', 'rb')
     u = pickle._Unpickler(f)
     u.encoding = 'latin1'
     training_data, validation_data, test_data = u.load()
     f.close()
-    return (training_data, validation_data, test_data)
+    return training_data, validation_data, test_data
 
-def load_data_wrapper():
+MNISTTrainingResultVector = npt.ArrayLike # A 10-dimensional unit vector with a 1.0 in the jth position and zeroes elsewhere
+MNISTDataWrapper = Tuple[MNISTImage, MNISTTrainingResultVector]
+MNISTImageAndResult = Tuple[MNISTImage, MNISTImageValue]
+
+def load_data_wrapper() -> Tuple[List[MNISTDataWrapper], List[MNISTImageAndResult], List[MNISTImageAndResult]]:
     """Return a tuple containing ``(training_data, validation_data,
     test_data)``. Based on ``load_data``, but the format is more
     convenient for use in our implementation of neural networks.
@@ -69,17 +82,19 @@ def load_data_wrapper():
     the training data and the validation / test data.  These formats
     turn out to be the most convenient for use in our neural network
     code."""
-    tr_d, va_d, te_d = load_data()
-    training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
-    training_results = [vectorized_result(y) for y in tr_d[1]]
+    mnist_training_data, mnist_validation_data, mnist_test_data = load_data()
+    mnist_training_images = mnist_training_data[0]
+    training_inputs = [np.reshape(mnist_training_image, (784, 1)) for mnist_training_image in mnist_training_images]
+    mnist_training_values = mnist_training_data[1]
+    training_results = [vectorized_result(mnist_training_value) for mnist_training_value in mnist_training_values]
     training_data = list(zip(training_inputs, training_results))
-    validation_inputs = [np.reshape(x, (784, 1)) for x in va_d[0]]
-    validation_data = list(zip(validation_inputs, va_d[1]))
-    test_inputs = [np.reshape(x, (784, 1)) for x in te_d[0]]
-    test_data = list(zip(test_inputs, te_d[1]))
-    return (training_data, validation_data, test_data)
+    validation_inputs = [np.reshape(x, (784, 1)) for x in mnist_validation_data[0]]
+    validation_data = list(zip(validation_inputs, mnist_validation_data[1]))
+    test_inputs = [np.reshape(x, (784, 1)) for x in mnist_test_data[0]]
+    test_data = list(zip(test_inputs, mnist_test_data[1]))
+    return training_data, validation_data, test_data
 
-def vectorized_result(j):
+def vectorized_result(j) -> MNISTTrainingResultVector:
     """Return a 10-dimensional unit vector with a 1.0 in the jth
     position and zeroes elsewhere.  This is used to convert a digit
     (0...9) into a corresponding desired output from the neural
